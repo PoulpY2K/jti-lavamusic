@@ -22,7 +22,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Stage 2: Create production image
-FROM node:20-slim
+FROM node:20
 
 ENV NODE_ENV production
 

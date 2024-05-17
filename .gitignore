@@ -11,7 +11,4 @@
 /yarn.lock
 /.eslintcache
 /package-lock.json
-/Lavalink/application.yml
-/Lavalink/plugins
-/prisma/lavamusic.db
 /prisma/migrations
