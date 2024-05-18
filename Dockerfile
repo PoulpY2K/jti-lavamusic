@@ -1,5 +1,5 @@
 # Stage 1: Build TypeScript
-FROM node:20 as builder
+FROM node:20 AS builder
 
 WORKDIR /opt/lavamusic/
 
@@ -22,7 +22,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Stage 2: Create production image
-FROM node:20
+FROM node:20 AS production
 
 ENV NODE_ENV production
 

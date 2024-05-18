@@ -1,75 +1,72 @@
 services:
-    ## services for lavalink
-    lavalink:
-        container_name: lavamusic-lavalink
-        image: ghcr.io/lavalink-devs/lavalink:4
-        restart: on-failure
-        environment:
-          _JAVA_OPTIONS: "-Xmx6G"
-          SERVER_PORT: "2333"
-          LAVALINK_SERVER_PASSWORD: "youshallnotpass"
-        volumes:
-            # mount application.yml from the same directory or use environment variables
-            - ./Lavalink/application.yml:/opt/Lavalink/application.yml
-            # persist plugins between restarts, make sure to set the correct permissions (user: 322, group: 322)
-            - ./Lavalink/plugins/:/opt/Lavalink/plugins/
-        networks:
-          - lavalink
-        #expose:
-        # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
-        #  - "2333"
-        ports:
-        # you only need this if you want to make your lavalink accessible from outside of containers
-          - "2333:2333"
-   
-    # services for postgresql database
-    postgres:
-        container_name: lavamusic-postgres
-        image: postgres:16
-        restart: on-failure
-        environment:
-          POSTGRES_USER: lavamusic
-          POSTGRES_PASSWORD: lavamusic
-          POSTGRES_DB: lavamusic
-        volumes:
-          - lavamusic-data:/var/lib/postgresql/data:rw
-        ports:
-          - "5432:5432"
-        healthcheck:
-          test: 'pg_isready -U lavamusic'
-          interval: 10s
-          timeout: 10s
-          retries: 5
-          start_period: 10s
-        networks:
-          - lavalink
+  ## services for lavalink
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: lavamusic-lavalink
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "2333"
+      LAVALINK_SERVER_PASSWORD: "youshallnotpass"
+    volumes:
+      # mount application.yml from the same directory or use environment variables
+      - ./lavalink/application.yml:/opt/lavalink/application.yml
+      # persist plugins between restarts, make sure to set the correct permissions (user: 322, group: 322)
+      - ./lavalink/plugins/:/opt/lavalink/plugins/
+    networks:
+      - lavalink
+    expose:
+      # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
+      - "2333"
+    ports:
+      # you only need this if you want to make your lavalink accessible from outside of containers
+      - "2333:2333"
 
-    # services for lavamusic
-    lavamusic:
-        container_name: lavamusic
-        build:
-          context: .
-          dockerfile: Dockerfile
-        environment:
-            # Your lavalink url
-            - LAVALINK_URL=lavalink:2333
-            # Your lavalink password
-            - LAVALINK_AUTH=youshallnotpass
-            # Your lavalink name
-            - LAVALINK_NAME=Lavamusic
-            # Your lavalink secure (true or false)
-            - LAVALINK_SECURE=false
-            # database url
-        #   - DATABASE_URL= put your database url here (mongodb or postgres)
-            - DATABASE_URL=postgresql://lavamusic:lavamusic@postgres:5432/lavamusic
-        #   - DATABASE_URL=mongodb://mongoadmin:mongopassword@mongodb:27017/lavamusic?authSource=admin (for mongodb)
-            
-        volumes:
-            # mount .env from the same directory or use environment variables
-            - .env:/opt/lavamusic/.env
-        restart: on-failure
-        networks:
-          - lavalink
+  # services for postgresql database
+  postgres:
+    image: postgres:16
+    container_name: lavamusic-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lavamusic
+      POSTGRES_PASSWORD: lavamusic
+      POSTGRES_DB: lavamusic
+    volumes:
+      - lavamusic-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: 'pg_isready -U lavamusic'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - lavalink
+
+  # services for lavamusic
+  lavamusic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lavamusic
+    restart: unless-stopped
+    environment:
+      # Your lavalink url
+      - LAVALINK_URL=lavalink:2333
+      # Your lavalink password
+      - LAVALINK_AUTH=youshallnotpass
+      # Your lavalink name
+      - LAVALINK_NAME=Lavamusic
+      # Your lavalink secure (true or false)
+      - LAVALINK_SECURE=false
+      # database url
+      - DATABASE_URL=postgresql://lavamusic:lavamusic@postgres:5432/lavamusic
+
+    volumes:
+      # mount .env from the same directory or use environment variables
+      - .env:/opt/lavamusic/.env
+    networks:
+      - lavalink
 
 volumes:
   lavamusic-data:
