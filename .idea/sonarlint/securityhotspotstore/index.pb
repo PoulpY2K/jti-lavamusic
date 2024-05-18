@@ -11,5 +11,5 @@ B
 Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
 <
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
->
-.gitattributes,2\4\24139dae656713ba861751fb2c2ac38839349a7a
+<
+.env.example,d\4\d4dae00d11854b35292c2b8a30515a9a0aa2d871
