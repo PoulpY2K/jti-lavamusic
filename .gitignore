@@ -11,3 +11,4 @@
 /yarn.lock
 /.eslintcache
 /package-lock.json
+/lavalink/application.yml

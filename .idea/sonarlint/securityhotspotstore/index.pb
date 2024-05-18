@@ -13,3 +13,7 @@ Dockerfile,6\6\6651ddff6eb82c840ced7c1dddee15c6e1913dd4
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
 <
 .env.example,d\4\d4dae00d11854b35292c2b8a30515a9a0aa2d871
+H
+lavalink/application.yml,5\6\56291feae2927057c3c78af9cea92c79bccc5c8e
+P
+ lavalink/example.application.yml,1\7\17713a7c14e23a8140e454917a654d1612083d23
