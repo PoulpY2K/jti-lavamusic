@@ -5,6 +5,7 @@ services:
     container_name: lavamusic-lavalink
     restart: unless-stopped
     environment:
+      _JAVA_OPTIONS: "-Xmx6G"
       SERVER_PORT: "2333"
       LAVALINK_SERVER_PASSWORD: "youshallnotpass"
     volumes:
@@ -14,12 +15,18 @@ services:
       - ./lavalink/plugins/:/opt/Lavalink/plugins/
     networks:
       - lavalink
-    expose:
+    healthcheck:
+      test: 'curl -H "Authorization: youshallnotpass" -s http://localhost:2333/version'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    #expose:
       # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
-      - "2333"
-    ports:
+      #- "2333"
+    #ports:
       # you only need this if you want to make your lavalink accessible from outside of containers
-      - "2333:2333"
+      #- "2333:2333"
 
   # services for postgresql database
   postgres:
@@ -50,6 +57,9 @@ services:
       dockerfile: Dockerfile
     container_name: lavamusic
     restart: unless-stopped
+    depends_on:
+      lavalink:
+        condition: service_healthy
     environment:
       # Your lavalink url
       - LAVALINK_URL=lavalink:2333
