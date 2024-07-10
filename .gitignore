@@ -1,9 +1,6 @@
 /.vscode
 /dist
 /node_modules
-/Lavalink/plugins
-/Lavalink/application.yml
-/Lavalink/Lavalink.jar
 /prisma/migrations
 /prisma/lavamusic.db
 .env
