@@ -53,8 +53,8 @@ services:
   # services for lavamusic
   lavamusic:
     build:
-      context: ../../../Downloads/jti-lavamusic-backup
-      dockerfile: ../../../Downloads/jti-lavamusic-backup/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: lavamusic
     restart: unless-stopped
     depends_on:
