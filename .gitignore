@@ -529,10 +529,9 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Lavamusic
-Lavalink/logs
-Lavalink/plugins
-Lavalink/application.yml
-Lavalink/Lavalink.jar
+lavalink/logs
+lavalink/application.yml
+lavalink/Lavalink.jar
 prisma/migrations
 prisma/lavamusic.db
 package-lock.json
