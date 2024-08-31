@@ -5,14 +5,24 @@ WORKDIR /opt/lavamusic/
 
 # Copy only package files and install dependencies
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
 
-# Copy source code and configuration
+# Install necessary tools and update npm
+RUN apt-get update && apt-get install -y openssl git \
+    && npm install -g npm@latest
+RUN npm install
+RUN npm config set global --legacy-peer-deps
+
+# Copy source code
 COPY . .
 
-# Generate Prisma client and build TypeScript
-RUN npx prisma db push && \
-    npm run build
+# Copy tsconfig.json
+COPY tsconfig.json ./
+# Copy prisma
+COPY prisma ./prisma
+
+RUN npx prisma generate
+# Build TypeScript
+RUN npm run build
 
 # Stage 2: Create production image
 FROM node:23-slim
