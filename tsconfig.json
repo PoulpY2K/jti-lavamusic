@@ -27,6 +27,6 @@
     "outDir": "./dist",
     "stripInternal": true
   },
-  "exclude": ["dist/", "node_modules/"],
+  "exclude": ["dist/", "node_modules/", "node_modules/*"],
   "include": ["src/**/*"]
 }
