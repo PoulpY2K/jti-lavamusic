@@ -21,12 +21,12 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
-    #expose:
+    expose:
       # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
-      #- "2333"
-    #ports:
+      - "2333"
+    ports:
       # you only need this if you want to make your lavalink accessible from outside of containers
-      #- "2333:2333"
+      - "2333:2333"
 
   # services for postgresql database
   postgres:
@@ -41,6 +41,8 @@ services:
       - lavamusic-data:/var/lib/postgresql/data:rw
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     healthcheck:
       test: 'pg_isready -U lavamusic'
       interval: 10s
@@ -65,7 +67,8 @@ services:
         - NODES=[{"id":"Lavamusic","host":"lavalink","port":2333,"authorization":"youshallnotpass"}]
         # database url
         - DATABASE_URL=postgresql://lavamusic:lavamusic@postgres:5432/lavamusic
-
+    env_file:
+      - .env
     volumes:
       # mount .env from the same directory or use environment variables
       - .env:/opt/lavamusic/.env
@@ -80,4 +83,5 @@ volumes:
 
 networks:
   lavalink:
+    external: true
     name: lavalink
