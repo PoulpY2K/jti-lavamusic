@@ -536,3 +536,5 @@ prisma/migrations
 prisma/lavamusic.db
 package-lock.json
 pnpm-lock.yaml
+
+.idea/
