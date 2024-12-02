@@ -48,7 +48,6 @@ RUN npm install --omit=dev
 
 # Generate Prisma client
 RUN npx prisma generate
-RUN npx prisma db push
 
 # Ensure application.yml is a file, not a directory
 RUN rm -rf /opt/lavamusic/application.yml && \
