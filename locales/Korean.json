@@ -511,6 +511,9 @@
 				"playlist_stolen": "`{playlist}` 플레이리스트를 {user}님에게서 가져왔어요.",
 				"error_occurred": "플레이리스트를 가져오는 도중 오류가 발생했어요."
 			}
+		},
+		"distorsion": {
+			"description": "cmd.distorsion.description"
 		}
 	},
 	"buttons": {

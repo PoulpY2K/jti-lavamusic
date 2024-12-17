@@ -21,7 +21,8 @@
 		"lavalink": {
 			"description": "Affiche les statistiques actuelles de Lavalink.",
 			"title": "Statistiques Lavalink",
-			"content": "Joueurs: {players}\nJoueurs en cours: {playingPlayers}\nTemps de fonctionnement: {uptime}\nNoyaux: {cores} Noyau(x)\nUtilisation de la mémoire: {used} / {reservable}\nCharge du système: {systemLoad}%\nCharge Lavalink: {lavalinkLoad}%"
+			"content": "Joueurs: {players}\nJoueurs en cours: {playingPlayers}\nTemps de fonctionnement: {uptime}\nNoyaux: {cores} Noyau(x)\nUtilisation de la mémoire: {used} / {reservable}\nCharge du système: {systemLoad}%\nCharge Lavalink: {lavalinkLoad}%",
+			"page_info": "Page {index} of {total}"
 		},
 		"invite": {
 			"description": "Obtenez le lien d'invitation du bot.",
@@ -500,6 +501,9 @@
 		},
 		"lyrics": {
 			"description": "Get's the lyrics of the currently playing track"
+		},
+		"distorsion": {
+			"description": "cmd.distorsion.description"
 		}
 	},
 	"buttons": {
