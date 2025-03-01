@@ -14,49 +14,38 @@ services:
         
         networks:
             - lavalink
-        #expose:
-        # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
-        #- 2333
-        #ports:
-        # you only need this if you want to make your lavalink accessible from outside of containers
-        #- "2333:2333"
+        expose:
+            # lavalink exposes port 2333 to connect to for other containers (this is for documentation purposes only)
+            - 2333
+        ports:
+            # you only need this if you want to make your lavalink accessible from outside of containers
+            - "2333:2333"
         healthcheck:
             test: 'curl -H "Authorization: youshallnotpass" -s http://localhost:2333/version'
             interval: 10s
             timeout: 10s
             retries: 5
             start_period: 10s
-    # services for postgresql database
-    # postgres:
-    #         container_name: lavamusic-postgres
-    #         image: postgres:16
-    #         restart: on-failure
-    #         environment:
-    #             POSTGRES_USER: lavamusic
-    #             POSTGRES_PASSWORD: lavamusic
-    #             POSTGRES_DB: lavamusic
-    #
-    #         volumes:
-    #             - ./Postgres/data:/var/lib/postgresql/data
-    #         healthcheck:
-    #             test: 'pg_isready -U lavamusic'
-    #             interval: 10s
-    #             timeout: 10s
-    #             retries: 5
-    #             start_period: 10s
 
-    # services for mongodb database
-    #mongodb:
-    #container_name: lavamusic-mongodb
-    #image: 'bitnami/mongodb:4.4'
-    #restart: on-failure
-    #environment:
-    #MONGODB_ADVERTISED_HOSTNAME: 127.0.0.1
-    #MONGODB_REPLICA_SET_MODE: primary
-    #MONGODB_ROOT_USER: mongoadmin
-    #MONGODB_ROOT_PASSWORD: mongopassword
-    #MONGODB_REPLICA_SET_KEY: replicasetkey123
-    #volumes: - ./MongoDB/data:/data/db
+    #services for postgresql database
+    postgres:
+        container_name: lavamusic-postgres
+        image: postgres:16
+        restart: on-failure
+        environment:
+            POSTGRES_USER: lavamusic
+            POSTGRES_PASSWORD: lavamusic
+            POSTGRES_DB: lavamusic
+        volumes:
+            - lavamusic-data:/var/lib/postgresql/data:rw
+        healthcheck:
+            test: 'pg_isready -U lavamusic'
+            interval: 10s
+            timeout: 10s
+            retries: 5
+            start_period: 10s
+        networks:
+            - lavalink
 
     # services for lavamusic
     lavamusic:
@@ -64,12 +53,11 @@ services:
         image: ghcr.io/appujet/lavamusic:main
         environment:
             # lavalink nodes
-            - NODES=[{"id":"LavaMusic","host":"lavalink","port":2333,"authorization":"youshallnotpass"}]
+            - NODES=[{"id":"Lavamusic","host":"lavalink","port":2333,"authorization":"youshallnotpass"}]
             # database url
-        #    - DATABASE_URL= put your database url here (mongodb or postgres)
-        #   - DATABASE_URL=postgresql://lavamusic:lavamusic@postgres:5432/lavamusic (for postgres)
-        #   - DATABASE_URL=mongodb://mongoadmin:mongopassword@mongodb:27017/lavamusic?authSource=admin (for mongodb)
-
+            - DATABASE_URL=postgresql://lavamusic:lavamusic@postgres:5432/lavamusic
+        env_file:
+          - .env
         volumes:
             # mount .env from the same directory or use environment variables
             - ${PWD}/.env:/opt/lavamusic/.env
@@ -80,6 +68,12 @@ services:
                 condition: service_healthy
         networks:
             - lavalink
+
+volumes:
+  lavamusic-data:
+    external: true
+    name: lavamusic-data
+
 networks:
     lavalink:
         name: lavalink
